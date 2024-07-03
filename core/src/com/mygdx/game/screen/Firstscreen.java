@@ -27,8 +27,8 @@ public class Firstscreen implements Screen {
 
     @Override
     public void show() {
-        pic = new Texture("FirstScreen.png");
-        ship = new Texture("LoadingShip.png");
+        pic = new Texture("FirstScreen/FirstScreen.png");
+        ship = new Texture("FirstScreen/LoadingShip.png");
     }
 
     @Override
