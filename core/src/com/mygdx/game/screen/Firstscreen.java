@@ -44,7 +44,10 @@ public class Firstscreen implements Screen {
         }
         int percentage = (int) (loadingProgress * 100);
 
-
+        if(percentage==100)
+        {
+            game.setScreen(new MainMenuScreen(game));
+        }
         // Draw the loading bar
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.SALMON);
