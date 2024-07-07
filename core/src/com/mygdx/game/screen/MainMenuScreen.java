@@ -114,7 +114,7 @@ public class MainMenuScreen implements Screen {
         if (isButton4) {
             game.batch.draw(ins2, 8, 15, 210, 41); // Draw hover state texture
             if (Gdx.input.isTouched()) {
-               // game.setScreen(new Instruction(game));
+                game.setScreen(new Instruction(game));
             }
         } else {
             game.batch.draw(ins1, 8, 15, 210, 41); // Draw normal texture
