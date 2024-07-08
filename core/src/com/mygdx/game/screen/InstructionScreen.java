@@ -11,14 +11,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 
-public class Instruction implements Screen {
+public class InstructionScreen implements Screen {
     MyGdxGame game;
     Texture pic;
     Texture back3,back4;
 
 
 
-    public Instruction(MyGdxGame game)
+    public InstructionScreen(MyGdxGame game)
     {
         this.game=game;
         pic=new Texture("Instruction/Instruction.png");
