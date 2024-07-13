@@ -16,12 +16,17 @@ import java.util.Iterator;
 public class GameScreen implements Screen {
     MyGdxGame game;
     Texture img;
+    Texture ship = new Texture("ship.png");
     float bg_x1 = 0, bg_x2 = 1280;
+    float x, y;
+
     int bg_speed = 6; // Adjusted background speed
     public static float speed = 600; // Adjusted ship speed
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
+        x = 30;
+        y = MyGdxGame.HEIGHT / 2f - 100f;
         img = new Texture("background.jpg");
     }
 
@@ -31,6 +36,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // Handle ship movement
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            if (y < MyGdxGame.HEIGHT - 115) y += speed * Gdx.graphics.getDeltaTime();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            if (y > 0) y -= speed * Gdx.graphics.getDeltaTime();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            if (x < MyGdxGame.WIDTH - 115) x += speed * Gdx.graphics.getDeltaTime();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (x > 0) x -= speed * Gdx.graphics.getDeltaTime();
+        }
+
 
         // Moving background
         bg_x1 -= bg_speed;
@@ -49,6 +68,7 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(img, bg_x1, 0);
         game.batch.draw(img, bg_x2, 0);
+        game.batch.draw(ship, x, y, 115, 120);
         game.batch.end();
     }
 
@@ -71,5 +91,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         img.dispose();
+        ship.dispose();
     }
 }
