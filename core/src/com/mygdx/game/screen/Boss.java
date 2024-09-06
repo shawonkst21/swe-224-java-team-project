@@ -4,7 +4,7 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.MyGdxGame;
 
-import static com.mygdx.game.screen.gameScreen2.Bossprojectiles;
+import static com.mygdx.game.screen.GameScreen2.Bossprojectiles;
 
 public class Boss {
     static float x;
