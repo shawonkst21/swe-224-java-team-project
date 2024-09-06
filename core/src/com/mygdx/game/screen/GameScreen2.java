@@ -73,7 +73,7 @@ public class GameScreen2 implements Screen {
         Bossprojectiles = new ArrayList<>();
 
         // Initialize boss
-        boss = new Boss2(MathUtils.random(0, MyGdxGame.WIDTH - 100), MyGdxGame.HEIGHT , 30, 30);
+        boss = new Boss(MathUtils.random(0, MyGdxGame.WIDTH - 100), MyGdxGame.HEIGHT , 30, 30);
 
         // Load background texture
         img = new Texture("bg2.jpg");
