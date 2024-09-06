@@ -52,6 +52,6 @@ public class Boss {
     }
 
     private void fire() {
-        Bossprojectiles.add(new Projectile2(x + 75, y, -300)); // Center the projectile relative to the boss
+        Bossprojectiles.add(new Projectile(x + 75, y, -300)); // Center the projectile relative to the boss
     }
 }

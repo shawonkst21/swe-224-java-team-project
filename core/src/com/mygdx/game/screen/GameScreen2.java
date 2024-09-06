@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.MyGdxGame;
-//import com.mygdx.game.Sound.gameSound;
+import com.mygdx.game.Sound.gameSound;
 import com.mygdx.game.screen.Projectile;
 
 import java.util.ArrayList;
@@ -45,9 +45,9 @@ public class GameScreen2 implements Screen {
     static ArrayList<Projectile> projectiles;
     static ArrayList<Projectile>shipProjectiles;
     static ArrayList<Projectile> Bossprojectiles;
-    ArrayList<HealthKit2> healthKits = new ArrayList<>(); // List of health kits
+    ArrayList<HealthKit> healthKits = new ArrayList<>(); // List of health kits
     ArrayList<Explosion>explosions=new ArrayList<>();
-    public static Boss2 boss;
+    public static Boss boss;
     boolean bossActive = false;
 
     public GameScreen2(MyGdxGame game) {
@@ -105,13 +105,13 @@ public class GameScreen2 implements Screen {
 
 
         // Update enemies
-        for (Enemy2 enemy : enemies) {
+        for (Enemy enemy : enemies) {
             enemy.update(delta);
         }
 
         // Update enemy projectiles
         for (int i = projectiles.size() - 1; i >= 0; i--) {
-            Projectile2 projectile = projectiles.get(i);
+            Projectile projectile = projectiles.get(i);
             projectile.update(delta);
             if (projectile.y + projectileTextureEnemy.getHeight() < 0) {
                 projectiles.remove(i);
@@ -120,7 +120,7 @@ public class GameScreen2 implements Screen {
 
         // Update ship projectiles
         for (int i = shipProjectiles.size() - 1; i >= 0; i--) {
-            Projectile2 projectile = shipProjectiles.get(i);
+            Projectile projectile = shipProjectiles.get(i);
             projectile.update(delta);
             if (projectile.y > MyGdxGame.HEIGHT) {
                 shipProjectiles.remove(i);
@@ -129,7 +129,7 @@ public class GameScreen2 implements Screen {
 
         // Update health kits
         for (int i = healthKits.size() - 1; i >= 0; i--) {
-            HealthKit2 healthKit = healthKits.get(i);
+            HealthKit healthKit = healthKits.get(i);
             healthKit.update(delta);
             if (healthKit.y + healthKitTexture.getHeight() < 0) {
                 healthKits.remove(i);

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.MyGdxGame;
 
 import static com.mygdx.game.screen.GameScreen2.enemyTexture;
-//import static com.mygdx.game.screen.GameScreen2.projectiles;
+import static com.mygdx.game.screen.GameScreen2.projectiles;
 
 public class Enemy {
     public  float x;
