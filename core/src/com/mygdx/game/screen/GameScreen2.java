@@ -64,7 +64,7 @@ public class GameScreen2 implements Screen {
         for (int i = 0; i < 5; i++) {
             float startX = MathUtils.random(0, MyGdxGame.WIDTH - 100); // Random X position
             float startY = MyGdxGame.HEIGHT + MathUtils.random(200, 400); // Start off-screen to the top
-            enemies.add(new Enemy2(startX, startY, 200));
+            enemies.add(new Enemy(startX, startY, 200));
         }
 
         // Initialize projectiles lists
@@ -100,7 +100,7 @@ public class GameScreen2 implements Screen {
 
         // Handle ship firing
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            shipProjectiles.add(new Projectile2(x+35, y+20, 500));
+            shipProjectiles.add(new Projectile(x+35, y+20, 500));
         }
 
 
@@ -152,7 +152,7 @@ public class GameScreen2 implements Screen {
 
         // Update boss projectiles
         for (int i = Bossprojectiles.size() - 1; i >= 0; i--) {
-            Projectile2 projectile = Bossprojectiles.get(i);
+            Projectile projectile = Bossprojectiles.get(i);
             projectile.update(delta);
             if (projectile.y + projectileTexture.getHeight() < 0) {
                 Bossprojectiles.remove(i);
@@ -186,7 +186,7 @@ public class GameScreen2 implements Screen {
         if (score % 10 == 0 && score != 0 && !healthKits.stream().anyMatch(kit -> kit.y > 0)) {
             float healthKitY = MyGdxGame.HEIGHT;
             float healthKitX = MathUtils.random(0, MyGdxGame.WIDTH - 50); // Random X position
-            healthKits.add(new HealthKit2(healthKitX, healthKitY, 200)); // Adjust speed as needed
+            healthKits.add(new HealthKit(healthKitX, healthKitY, 200)); // Adjust speed as needed
         }
 
         // Rendering
@@ -196,23 +196,23 @@ public class GameScreen2 implements Screen {
         game.batch.draw(ship, x, y, 120, 125);
 
         // Draw enemies
-        for (Enemy2 enemy : enemies) {
+        for (Enemy enemy : enemies) {
             game.batch.draw(enemyTexture, enemy.x, enemy.y, 150, 70);
         }
 
         // Draw enemy projectiles
-        for (Projectile2 projectile : projectiles) {
+        for (Projectile projectile : projectiles) {
             game.batch.draw(projectileTextureEnemy, projectile.x + 10, projectile.y, 40, 55);
         }
 
         // Draw ship projectiles
-        for (Projectile2 projectile : shipProjectiles) {
+        for (Projectile projectile : shipProjectiles) {
             game.batch.draw(projectileTextureShip, projectile.x, projectile.y, 50, 70);
         }
 
 
         // Draw health kits
-        for (HealthKit2 healthKit : healthKits) {
+        for (HealthKit healthKit : healthKits) {
             game.batch.draw(healthKitTexture, healthKit.x, healthKit.y, 70, 50); // Adjust size as needed
         }
 
@@ -223,7 +223,7 @@ public class GameScreen2 implements Screen {
         }
 
         // Draw boss projectiles
-        for (Projectile2 projectile : Bossprojectiles) {
+        for (Projectile projectile : Bossprojectiles) {
             game.batch.draw(projectileTexture, projectile.x + 10, projectile.y, 20, 20);
         }
         //explosion
@@ -272,15 +272,15 @@ public class GameScreen2 implements Screen {
         // Create rectangles for the ship and enemies
         Rectangle shipRect = new Rectangle(x, y, ship.getWidth() - 250, ship.getHeight() - 300);
 
-        Iterator<Enemy2> enemyIterator = enemies.iterator();
+        Iterator<Enemy> enemyIterator = enemies.iterator();
         while (enemyIterator.hasNext()) {
-            Enemy2 enemy = enemyIterator.next();
+            Enemy enemy = enemyIterator.next();
             Rectangle enemyRect = new Rectangle(enemy.x, enemy.y, enemyTexture.getWidth() - 600, enemyTexture.getHeight() - 400);
 
             // Check for collision between ship projectiles and enemies
-            Iterator<Projectile2> shipProjectileIterator = shipProjectiles.iterator();
+            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
             while (shipProjectileIterator.hasNext()) {
-                Projectile2 projectile = shipProjectileIterator.next();
+                Projectile projectile = shipProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureShip.getWidth() - 100, projectileTextureShip.getHeight() - 70);
                 if (projectileRect.overlaps(enemyRect)) {
                     shipProjectileIterator.remove();
@@ -291,9 +291,9 @@ public class GameScreen2 implements Screen {
             }
 
             // Check for collision between enemy projectiles and the ship
-            Iterator<Projectile2> enemyProjectileIterator = projectiles.iterator();
+            Iterator<Projectile> enemyProjectileIterator = projectiles.iterator();
             while (enemyProjectileIterator.hasNext()) {
-                Projectile2 projectile = enemyProjectileIterator.next();
+                Projectile projectile = enemyProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureEnemy.getWidth() - 200, projectileTextureEnemy.getHeight() - 170);
                 if (projectileRect.overlaps(shipRect)) {
                     enemyProjectileIterator.remove();
@@ -313,9 +313,9 @@ public class GameScreen2 implements Screen {
         }
 
         // Check for collision between ship and health kits
-        Iterator<HealthKit2> healthKitIterator = healthKits.iterator();
+        Iterator<HealthKit> healthKitIterator = healthKits.iterator();
         while (healthKitIterator.hasNext()) {
-            HealthKit2 healthKit = healthKitIterator.next();
+            HealthKit healthKit = healthKitIterator.next();
             Rectangle healthKitRect = new Rectangle(healthKit.x, healthKit.y, healthKitTexture.getWidth() - 30, healthKitTexture.getHeight() - 30); // Adjust size as needed
             if (healthKitRect.overlaps(shipRect)) {
                 healthKitIterator.remove();
@@ -329,9 +329,9 @@ public class GameScreen2 implements Screen {
         // Check for collision between ship projectiles and boss
         if (bossActive) {
             Rectangle bossRect = new Rectangle(boss.x, boss.y, bossTexture.getWidth(), bossTexture.getHeight()); // Adjust size as needed
-            Iterator<Projectile2> shipProjectileIterator = shipProjectiles.iterator();
+            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
             while (shipProjectileIterator.hasNext()) {
-                Projectile2 projectile = shipProjectileIterator.next();
+                Projectile projectile = shipProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTexture.getWidth() - 100, projectileTexture.getHeight() - 70);
                 if (projectileRect.overlaps(bossRect)) {
                     shipProjectileIterator.remove();
@@ -344,9 +344,9 @@ public class GameScreen2 implements Screen {
                 }
             }
             // Check for collision between boss projectiles and the ship
-            Iterator<Projectile2> bossProjectileIterator =Bossprojectiles.iterator();
+            Iterator<Projectile> bossProjectileIterator =Bossprojectiles.iterator();
             while (bossProjectileIterator.hasNext()) {
-                Projectile2 projectile = bossProjectileIterator.next();
+                Projectile projectile = bossProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTexture.getWidth() , projectileTexture.getHeight() );
                 if (projectileRect.overlaps(shipRect)) {
                     bossProjectileIterator.remove();
