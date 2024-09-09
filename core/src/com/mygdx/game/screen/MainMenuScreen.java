@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Sound.gameSound;
 
 public class MainMenuScreen implements Screen {
     MyGdxGame game;
@@ -90,7 +91,9 @@ public class MainMenuScreen implements Screen {
         if (isButton1) {
             game.batch.draw(inbutton1, button1X, button1Y, button1Width, button1Height); // Draw hover state texture
             if (Gdx.input.isTouched()) {
-               // game.setScreen(new gameScreen(game));
+                gameSound.buttonclick.play();
+                this.dispose();
+               // game.setScreen(new GameMode(game));
             }
         } else {
             game.batch.draw(button1, button1X, button1Y, button1Width, button1Height); // Draw normal texture
@@ -98,6 +101,10 @@ public class MainMenuScreen implements Screen {
 
         if (isButton2) {
             game.batch.draw(inbutton2, button2X, button2Y, button2Width, button2Height); // Draw hover state texture
+            if(Gdx.input.isTouched())
+            {
+                Gdx.app.exit();
+            }
         } else {
             game.batch.draw(button2, button2X, button2Y, button2Width, button2Height); // Draw normal texture
         }
@@ -105,6 +112,8 @@ public class MainMenuScreen implements Screen {
         if (isButton3) {
             game.batch.draw(about2, button3X, button3Y + 1, button3Width, button3Height); // Draw hover state texture
             if (Gdx.input.isTouched()) {
+                gameSound.buttonclick.play();
+                this.dispose();
                 game.setScreen(new AboutScreen(game));
             }
         } else {
@@ -114,6 +123,8 @@ public class MainMenuScreen implements Screen {
         if (isButton4) {
             game.batch.draw(ins2, 8, 15, 210, 41); // Draw hover state texture
             if (Gdx.input.isTouched()) {
+                gameSound.buttonclick.play();
+                this.dispose();
                 game.setScreen(new InstructionScreen(game));
             }
         } else {
