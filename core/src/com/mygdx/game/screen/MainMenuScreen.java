@@ -93,7 +93,7 @@ public class MainMenuScreen implements Screen {
             if (Gdx.input.isTouched()) {
                 gameSound.buttonclick.play();
                 this.dispose();
-               // game.setScreen(new GameMode(game));
+               game.setScreen(new GameMode(game));
             }
         } else {
             game.batch.draw(button1, button1X, button1Y, button1Width, button1Height); // Draw normal texture
