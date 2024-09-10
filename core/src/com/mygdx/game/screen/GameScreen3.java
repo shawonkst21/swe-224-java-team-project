@@ -155,3 +155,159 @@ public class GameScreen3 implements Screen {
         bg_x1 -= bg_speed;
         bg_x2 -= bg_speed;
 
+        // Reset background position
+        if (bg_x1 + img.getWidth() <= 0) {
+            bg_x1 = bg_x2 + img.getWidth();
+        }
+        if (bg_x2 + img.getWidth() <= 0) {
+            bg_x2 = bg_x1 + img.getWidth();
+        }
+
+        // Check if score is a multiple of 10 and add health kit
+        if (score % 10 == 0 && score != 0 && !healthKits.stream().anyMatch(kit -> kit.x > 0)) {
+            float healthKitX = MyGdxGame.WIDTH;
+            float healthKitY = MathUtils.random(0, MyGdxGame.HEIGHT - 50); // Random Y position
+            healthKits.add(new HealthKit(healthKitX, healthKitY, 200)); // Adjust speed as needed
+        }
+
+        // Rendering
+        game.batch.begin();
+        game.batch.draw(img, bg_x1, 0);
+        game.batch.draw(img, bg_x2, 0);
+        game.batch.draw(ship, x, y, 115, 120);
+
+        // Draw enemies
+        for (Enemy enemy : enemies) {
+            game.batch.draw(enemyTexture, enemy.x, enemy.y, 80, 70);
+        }
+
+        // Draw enemy projectiles
+        for (Projectile projectile : projectiles) {
+            game.batch.draw(projectileTextureEnemy, projectile.x, projectile.y + 10, 40, 55);
+        }
+
+        // Draw ship projectiles
+        for (Projectile projectile : shipProjectiles) {
+            game.batch.draw(projectileTextureShip, projectile.x, projectile.y + 10, 70, 50);
+        }
+
+        // Draw health kits
+        for (HealthKit healthKit : healthKits) {
+            game.batch.draw(healthKitTexture, healthKit.x, healthKit.y, 70, 50); // Adjust size as needed
+        }
+
+        // Draw boss
+        if (bossActive) {
+            game.batch.draw(bossTexture, boss.x, boss.y, 150, 150);
+            // Adjust size as neede
+            // System.out.println("koooo");
+        }
+        // Draw enemy projectiles
+        for (Projectile projectile : Bossprojectiles) {
+            game.batch.draw(projectileTexture, projectile.x, projectile.y + 10, 50, 30);
+        }
+
+        GlyphLayout scoreLayout = new GlyphLayout(sfont, "Score: " + score);
+        GlyphLayout HealthLayout = new GlyphLayout(sfont, "Life: " + Math.ceil(health/10));
+        sfont.draw(game.batch, scoreLayout, MyGdxGame.WIDTH - 250, MyGdxGame.HEIGHT - 30);
+        sfont.draw(game.batch, HealthLayout, 10, MyGdxGame.HEIGHT - 30);
+
+        game.batch.end();
+    }
+
+    private void checkCollisions() {
+        // Create rectangles for the ship and enemies
+        Rectangle shipRect = new Rectangle(x, y, ship.getWidth() - 50, ship.getHeight() - 50);
+
+        Iterator<Enemy> enemyIterator = enemies.iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            Rectangle enemyRect = new Rectangle(enemy.x, enemy.y, enemyTexture.getWidth() - 500, enemyTexture.getHeight() - 400);
+
+            // Check for collision between ship projectiles and enemies
+            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
+            while (shipProjectileIterator.hasNext()) {
+                Projectile projectile = shipProjectileIterator.next();
+                Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureShip.getWidth() - 100, projectileTextureShip.getHeight() - 70);
+                if (projectileRect.overlaps(enemyRect)) {
+                    shipProjectileIterator.remove();
+                    enemy.reset(); // Reset enemy position instead of removing
+                    score++;
+                    break;
+                }
+            }
+
+            // Check for collision between enemy projectiles and the ship
+            Iterator<Projectile> enemyProjectileIterator = projectiles.iterator();
+            while (enemyProjectileIterator.hasNext()) {
+                Projectile projectile = enemyProjectileIterator.next();
+                Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureEnemy.getWidth() - 100, projectileTextureEnemy.getHeight() - 70);
+                if (projectileRect.overlaps(shipRect)) {
+                    enemyProjectileIterator.remove();
+                    health--;
+                    if (health <= 0) {
+                        // Handle game over (e.g., restart the game or show game over screen)
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Check for collision between ship and health kits
+        Iterator<HealthKit> healthKitIterator = healthKits.iterator();
+        while (healthKitIterator.hasNext()) {
+            HealthKit healthKit = healthKitIterator.next();
+            Rectangle healthKitRect = new Rectangle(healthKit.x, healthKit.y, healthKitTexture.getWidth() - 30, healthKitTexture.getHeight() - 30); // Adjust size as needed
+            if (healthKitRect.overlaps(shipRect)) {
+                healthKitIterator.remove();
+                health += 10; // Increase health by 10
+                break;
+            }
+        }
+
+        // Check for collision between ship projectiles and boss
+        if (bossActive) {
+            Rectangle bossRect = new Rectangle(boss.x, boss.y, bossTexture.getWidth() , bossTexture.getHeight()); // Adjust size as needed
+            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
+            while (shipProjectileIterator.hasNext()) {
+                Projectile projectile = shipProjectileIterator.next();
+                Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTexture.getWidth() - 100, projectileTexture.getHeight() - 70);
+                if (projectileRect.overlaps(bossRect)) {
+                    shipProjectileIterator.remove();
+                    boss.health -= 10; // Decrease boss health
+                    if (boss.health <= 0) {
+                        bossActive = false;
+                        score += 5; // Reward player for defeating the boss
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void dispose() {
+        img.dispose();
+        ship.dispose();
+        enemyTexture.dispose();
+        projectileTextureShip.dispose();
+        healthKitTexture.dispose(); // Dispose health kit texture
+        bossTexture.dispose(); // Dispose boss texture
+    }
+}
