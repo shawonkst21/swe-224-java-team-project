@@ -23,10 +23,10 @@ public class GameScreen3 implements Screen {
     Texture img;
     Texture ship = new Texture("ship.png");
     static Texture enemyTexture = new Texture("alien.png");
-    static Texture projectileTextureShip = new Texture("fire2.png");
+    static Texture projectileTextureShip = new Texture("fire2 (1).png");
     static Texture projectileTexture = new Texture("fire.png");
     static Texture projectileTextureEnemy = new Texture("bossFire.png");
-    Texture healthKitTexture = new Texture("healthkit.png"); // Load the texture for the health kit
+    Texture healthKitTexture = new Texture("healthkit (1).png"); // Load the texture for the health kit
     Texture bossTexture = new Texture("222.png"); // Load the texture for the boss
 
     float bg_x1 = 0, bg_x2 = 1280;
