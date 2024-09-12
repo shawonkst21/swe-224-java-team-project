@@ -9,10 +9,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.Sound.gameSound;
+
+import static com.mygdx.game.Sound.gameSound.loadingMusic;
 
 public class LoadingScreen implements Screen {
     MyGdxGame game;
-    Texture loading,ship;
+    Texture loading, ship;
     float loadingProgress;
     ShapeRenderer shapeRenderer;
     BitmapFont font;
@@ -21,15 +24,16 @@ public class LoadingScreen implements Screen {
         this.game = game;
         loadingProgress = 0f;
         shapeRenderer = new ShapeRenderer();
-        font=new BitmapFont(Gdx.files.internal("font/score.fnt"));
+        font = new BitmapFont(Gdx.files.internal("font/score.fnt"));
         font.getData().setScale(0.5f);
+        loadingMusic.setLooping(true);
+        loadingMusic.play();
     }
 
     @Override
     public void show() {
         loading = new Texture("LoadingScreen/loading.png");
         ship = new Texture("FirstScreen/LoadingShip.png");
-
     }
 
     @Override
@@ -44,45 +48,55 @@ public class LoadingScreen implements Screen {
             loadingProgress += delta * 0.2f; // Adjust the speed of loading as needed
         }
         int percentage = (int) (loadingProgress * 100);
+        if (percentage == 100) {
+            if (GameMode.check) {
+                game.setScreen(new GameScreen3(game));
+            } else {
+                game.setScreen(new GameScreen2(game));
+            }
+        }
 
-        // Draw the loading bar
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(0, 45, MyGdxGame.WIDTH * loadingProgress, 4);
-        shapeRenderer.end();
+            // Draw the loading bar
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.rect(0, 45, MyGdxGame.WIDTH * loadingProgress, 4);
+            shapeRenderer.end();
 
-        // Calculate ship position based on loadingProgress
-        float shipX = MyGdxGame.WIDTH * loadingProgress - (ship.getWidth() / 2);
-        float shipY = 50 - (ship.getHeight() / 2);
+            // Calculate ship position based on loadingProgress
+            float shipX = MyGdxGame.WIDTH * loadingProgress - (ship.getWidth() / 2);
+            float shipY = 50 - (ship.getHeight() / 2);
 
-        // Draw the ship at the calculated position
-        game.batch.begin();
-        game.batch.draw(ship, shipX, shipY);
-        font.draw(game.batch, "Loading.."+percentage + "%",0,72);
-        game.batch.end();
+            // Draw the ship at the calculated position
+            game.batch.begin();
+            game.batch.draw(ship, shipX, shipY);
+            font.draw(game.batch, "Loading.." + percentage + "%", 0, 72);
+            game.batch.end();
 
+        }
+
+        @Override
+        public void resize ( int width, int height){
+        }
+
+        @Override
+        public void pause () {
+        }
+
+        @Override
+        public void resume () {
+        }
+
+        @Override
+        public void hide () {
+        }
+
+        @Override
+        public void dispose () {
+            loading.dispose();
+            shapeRenderer.dispose();
+            font.dispose();
+            loadingMusic.dispose();
+
+        }
     }
 
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
-        loading.dispose();
-        shapeRenderer.dispose();
-        font.dispose();
-    }
-}

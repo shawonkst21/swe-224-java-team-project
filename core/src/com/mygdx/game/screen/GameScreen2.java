@@ -29,12 +29,12 @@ public class GameScreen2 implements Screen {
     int score;
     int health;
     Texture img;
-    Texture ship = new Texture("screen2/Yellow.png");
+    Texture ship = new Texture("Screen2/Yellow.png");
     static Texture enemyTexture = new Texture("Screen2/Enemy2.png");
     static Texture projectileTextureShip = new Texture("Screen2/Fire2.png");
-    static Texture projectileTexture = new Texture("hi.png");
+    static Texture projectileTexture = new Texture("Screen2/hi.png");
     static Texture projectileTextureEnemy = new Texture("Screen2/alienFire.png");
-    Texture healthKitTexture = new Texture("healthkit.png"); // Load the texture for the health kit
+    Texture healthKitTexture = new Texture("Screen2/healthkit.png"); // Load the texture for the health kit
     public static Texture bossTexture = new Texture("Screen2/Boss.png"); // Load the texture for the boss
 
     float bg_y1 = 0, bg_y2;
@@ -76,7 +76,7 @@ public class GameScreen2 implements Screen {
         boss = new Boss(MathUtils.random(0, MyGdxGame.WIDTH - 100), MyGdxGame.HEIGHT , 30, 30);
 
         // Load background texture
-        img = new Texture("bg2.jpg");
+        img = new Texture("background2.jpg");
         bg_y2 = img.getHeight(); // Initialize bg_y2 to the height of the image
         sfont = new BitmapFont(Gdx.files.internal("font/score.fnt")); // Initialize the font with the correct path
         sfont.getData().setScale(.55f);
