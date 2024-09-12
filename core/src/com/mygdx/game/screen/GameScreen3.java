@@ -21,19 +21,19 @@ public class GameScreen3 implements Screen {
     int score;
     int health;
     Texture img;
-    Texture ship = new Texture("ship.png");
-    static Texture enemyTexture = new Texture("alien.png");
-    static Texture projectileTextureShip = new Texture("fire2 (1).png");
-    static Texture projectileTexture = new Texture("fire.png");
-    static Texture projectileTextureEnemy = new Texture("bossFire.png");
-    Texture healthKitTexture = new Texture("healthkit (1).png"); // Load the texture for the health kit
-    Texture bossTexture = new Texture("222.png"); // Load the texture for the boss
+    Texture ship = new Texture("GameScreen3/ship.png");
+    static Texture enemyTexture = new Texture("GameScreen3/alien.png");
+    static Texture projectileTextureShip = new Texture("GameScreen3/fire2 (1).png");
+    static Texture projectileTexture = new Texture("GameScreen3/fire.png");
+    static Texture projectileTextureEnemy = new Texture("GameScreen3/bossFire.png");
+    Texture healthKitTexture = new Texture("GameScreen3/healthkit (1).png"); // Load the texture for the health kit
+    Texture bossTexture = new Texture("GameScreen3/222.png"); // Load the texture for the boss
 
     float bg_x1 = 0, bg_x2 = 1280;
     int bg_speed = 6; // Adjusted background speed
     public static float speed = 600; // Adjusted ship speed
 
-    ArrayList<Enemy> enemies;
+    ArrayList<Enemy2> enemies;
     static ArrayList<Projectile> projectiles;
     static ArrayList<Projectile> shipProjectiles;
     static ArrayList<Projectile> Bossprojectiles;
@@ -53,7 +53,7 @@ public class GameScreen3 implements Screen {
         for (int i = 0; i < 5; i++) {
             float startX = MyGdxGame.WIDTH + MathUtils.random(200, 400); // Start off-screen to the right
             float startY = MathUtils.random(0, MyGdxGame.HEIGHT - 100); // Random Y position
-            enemies.add(new Enemy(startX, startY, 200));
+            enemies.add(new Enemy2(startX, startY, 200));
         }
 
         // Initialize projectiles lists
@@ -65,7 +65,7 @@ public class GameScreen3 implements Screen {
         boss = new Boss(MyGdxGame.WIDTH + 50, MathUtils.random(0, MyGdxGame.HEIGHT - 100), 50, 30);
 
         // Load background texture
-        img = new Texture("BG.jpg");
+        img = new Texture("background.jpg");
         sfont = new BitmapFont(Gdx.files.internal("font/score.fnt")); // Initialize the font with the correct path
         sfont.getData().setScale(.8f);
     }
@@ -96,7 +96,7 @@ public class GameScreen3 implements Screen {
         }
 
         // Update enemies
-        for (Enemy enemy : enemies) {
+        for (Enemy2 enemy : enemies) {
             enemy.update(delta);
         }
 
@@ -177,7 +177,7 @@ public class GameScreen3 implements Screen {
         game.batch.draw(ship, x, y, 115, 120);
 
         // Draw enemies
-        for (Enemy enemy : enemies) {
+        for (Enemy2 enemy : enemies) {
             game.batch.draw(enemyTexture, enemy.x, enemy.y, 80, 70);
         }
 
@@ -219,9 +219,9 @@ public class GameScreen3 implements Screen {
         // Create rectangles for the ship and enemies
         Rectangle shipRect = new Rectangle(x, y, ship.getWidth() - 50, ship.getHeight() - 50);
 
-        Iterator<Enemy> enemyIterator = enemies.iterator();
+        Iterator<Enemy2> enemyIterator = enemies.iterator();
         while (enemyIterator.hasNext()) {
-            Enemy enemy = enemyIterator.next();
+            Enemy2 enemy = enemyIterator.next();
             Rectangle enemyRect = new Rectangle(enemy.x, enemy.y, enemyTexture.getWidth() - 500, enemyTexture.getHeight() - 400);
 
             // Check for collision between ship projectiles and enemies

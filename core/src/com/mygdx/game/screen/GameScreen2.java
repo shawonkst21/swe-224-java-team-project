@@ -137,7 +137,7 @@ public class GameScreen2 implements Screen {
         }
 
         // Check if score is a multiple of 20 and add boss
-        if (score % 2 == 0 && score != 0 && !bossActive) {
+        if (score % 20== 0 && score != 0 && !bossActive) {
             boss.reset();
             bossActive = true;
         }
