@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Sound.gameSound;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +38,8 @@ public class GameScreen3 implements Screen {
     static ArrayList<Projectile2> projectiles;
     static ArrayList<Projectile2> shipProjectiles;
     static ArrayList<Projectile2> Bossprojectiles;
-    ArrayList<HealthKit> healthKits = new ArrayList<>(); // List of health kits
+    ArrayList<Healthkit2> healthKits = new ArrayList<>(); // List of health kits
+    ArrayList<Explosion>explosion2=new ArrayList<>();
     Boss2 boss;
     boolean bossActive = false;
 
@@ -47,7 +49,8 @@ public class GameScreen3 implements Screen {
         y = MyGdxGame.HEIGHT / 2f - 100f;
         score = 0;
         health = 30; // Starting health
-
+       gameSound.theme.setLooping(true);
+       gameSound.theme.play();
         // Initialize enemies
         enemies = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -77,12 +80,6 @@ public class GameScreen3 implements Screen {
     @Override
     public void render(float delta) {
         // Handle ship movement
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if (y < MyGdxGame.HEIGHT - 115) y += speed * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-            if (y > 0) y -= speed * Gdx.graphics.getDeltaTime();
-        }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             if (x < MyGdxGame.WIDTH - 115) x += speed * Gdx.graphics.getDeltaTime();
         }
@@ -120,7 +117,7 @@ public class GameScreen3 implements Screen {
 
         // Update health kits
         for (int i = healthKits.size() - 1; i >= 0; i--) {
-            HealthKit healthKit = healthKits.get(i);
+            Healthkit2 healthKit = healthKits.get(i);
             healthKit.update(delta);
             if (healthKit.x + healthKitTexture.getWidth() < 0) {
                 healthKits.remove(i);
@@ -148,6 +145,16 @@ public class GameScreen3 implements Screen {
                 Bossprojectiles.remove(i);
             }
         }
+        // Update explosions
+        Iterator<Explosion> explosionIterator = explosion2.iterator();
+        while (explosionIterator.hasNext()) {
+            Explosion explosion = explosionIterator.next();
+            explosion.update(delta);
+            if (explosion.remove) {
+                explosionIterator.remove();
+            }
+        }
+        //
         // Check for collisions
         checkCollisions();
 
@@ -167,7 +174,7 @@ public class GameScreen3 implements Screen {
         if (score % 10 == 0 && score != 0 && !healthKits.stream().anyMatch(kit -> kit.x > 0)) {
             float healthKitX = MyGdxGame.WIDTH;
             float healthKitY = MathUtils.random(0, MyGdxGame.HEIGHT - 50); // Random Y position
-            healthKits.add(new HealthKit(healthKitX, healthKitY, 200)); // Adjust speed as needed
+            healthKits.add(new Healthkit2(healthKitX, healthKitY, 200)); // Adjust speed as needed
         }
 
         // Rendering
@@ -192,7 +199,7 @@ public class GameScreen3 implements Screen {
         }
 
         // Draw health kits
-        for (HealthKit healthKit : healthKits) {
+        for (Healthkit2 healthKit : healthKits) {
             game.batch.draw(healthKitTexture, healthKit.x, healthKit.y, 70, 50); // Adjust size as needed
         }
 
@@ -206,7 +213,9 @@ public class GameScreen3 implements Screen {
         for (Projectile2 projectile : Bossprojectiles) {
             game.batch.draw(projectileTexture, projectile.x, projectile.y + 10, 50, 30);
         }
-
+        for (Explosion explosion : explosion2) {
+            explosion.render(game.batch);
+        }
         GlyphLayout scoreLayout = new GlyphLayout(sfont, "Score: " + score);
         GlyphLayout HealthLayout = new GlyphLayout(sfont, "Life: " + Math.ceil(health/10));
         sfont.draw(game.batch, scoreLayout, MyGdxGame.WIDTH - 250, MyGdxGame.HEIGHT - 30);
@@ -244,6 +253,11 @@ public class GameScreen3 implements Screen {
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureEnemy.getWidth() - 100, projectileTextureEnemy.getHeight() - 70);
                 if (projectileRect.overlaps(shipRect)) {
                     enemyProjectileIterator.remove();
+
+                    explosion2.add(new Explosion(projectile.x, projectile.y));
+                    if (!gameSound.explosion.isPlaying()){
+                        gameSound.explosion.play();
+                    }
                     health--;
                     if (health <= 0) {
                         // Handle game over (e.g., restart the game or show game over screen)
@@ -254,9 +268,9 @@ public class GameScreen3 implements Screen {
         }
 
         // Check for collision between ship and health kits
-        Iterator<HealthKit> healthKitIterator = healthKits.iterator();
+        Iterator<Healthkit2> healthKitIterator = healthKits.iterator();
         while (healthKitIterator.hasNext()) {
-            HealthKit healthKit = healthKitIterator.next();
+            Healthkit2 healthKit = healthKitIterator.next();
             Rectangle healthKitRect = new Rectangle(healthKit.x, healthKit.y, healthKitTexture.getWidth() - 30, healthKitTexture.getHeight() - 30); // Adjust size as needed
             if (healthKitRect.overlaps(shipRect)) {
                 healthKitIterator.remove();
@@ -278,6 +292,26 @@ public class GameScreen3 implements Screen {
                     if (boss.health <= 0) {
                         bossActive = false;
                         score += 5; // Reward player for defeating the boss
+                    }
+                    break;
+                }
+            }
+            // Check for collision between boss projectiles and the ship
+            Iterator<Projectile2> bossProjectileIterator =Bossprojectiles.iterator();
+            while (bossProjectileIterator.hasNext()) {
+                Projectile2 projectile = bossProjectileIterator.next();
+                Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTexture.getWidth() , projectileTexture.getHeight() );
+                if (projectileRect.overlaps(shipRect)) {
+                    bossProjectileIterator.remove();
+                    explosion2.add(new Explosion(projectile.x, projectile.y));
+                    if (!gameSound.explosion.isPlaying()){
+                        gameSound.explosion.play();
+                    }
+                    health-=5;
+                    if (health <= 0) {
+                        this.dispose();
+                        game.setScreen(new GameOver(game,score));
+                        gameSound.theme.stop();
                     }
                     break;
                 }
