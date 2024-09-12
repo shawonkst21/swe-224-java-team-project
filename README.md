@@ -111,7 +111,7 @@ Players control a spaceship in a galactic war against waves of enemies and bosse
 
 ## How to Play
 1. **Movement**: Use arrow keys (or WASD) to control your spaceship.
- ### *Control*
+### *Control*
 
 | Control | Player 1 | 
 |---------|----------|
