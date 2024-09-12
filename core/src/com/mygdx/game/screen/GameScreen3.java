@@ -34,9 +34,9 @@ public class GameScreen3 implements Screen {
     public static float speed = 600; // Adjusted ship speed
 
     ArrayList<Enemy2> enemies;
-    static ArrayList<Projectile> projectiles;
-    static ArrayList<Projectile> shipProjectiles;
-    static ArrayList<Projectile> Bossprojectiles;
+    static ArrayList<Projectile2> projectiles;
+    static ArrayList<Projectile2> shipProjectiles;
+    static ArrayList<Projectile2> Bossprojectiles;
     ArrayList<HealthKit> healthKits = new ArrayList<>(); // List of health kits
     Boss boss;
     boolean bossActive = false;
@@ -92,7 +92,7 @@ public class GameScreen3 implements Screen {
 
         // Handle ship firing
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            shipProjectiles.add(new Projectile(x + ship.getWidth(), y + ship.getHeight() / 2, 500));
+            shipProjectiles.add(new Projectile2(x + ship.getWidth(), y + ship.getHeight() / 2, 500));
         }
 
         // Update enemies
@@ -102,7 +102,7 @@ public class GameScreen3 implements Screen {
 
         // Update enemy projectiles
         for (int i = projectiles.size() - 1; i >= 0; i--) {
-            Projectile projectile = projectiles.get(i);
+            Projectile2 projectile = projectiles.get(i);
             projectile.update(delta);
             if (projectile.x + projectileTextureEnemy.getWidth() < 0) {
                 projectiles.remove(i);
@@ -111,7 +111,7 @@ public class GameScreen3 implements Screen {
 
         // Update ship projectiles
         for (int i = shipProjectiles.size() - 1; i >= 0; i--) {
-            Projectile projectile = shipProjectiles.get(i);
+            Projectile2 projectile = shipProjectiles.get(i);
             projectile.update(delta);
             if (projectile.x > MyGdxGame.WIDTH) {
                 shipProjectiles.remove(i);
@@ -142,7 +142,7 @@ public class GameScreen3 implements Screen {
         }
         //boss
         for (int i = Bossprojectiles.size() - 1; i >= 0; i--) {
-            Projectile projectile = Bossprojectiles.get(i);
+            Projectile2 projectile = Bossprojectiles.get(i);
             projectile.update(delta);
             if (projectile.x + projectileTexture.getWidth() < 0) {
                 Bossprojectiles.remove(i);
@@ -182,12 +182,12 @@ public class GameScreen3 implements Screen {
         }
 
         // Draw enemy projectiles
-        for (Projectile projectile : projectiles) {
+        for (Projectile2 projectile : projectiles) {
             game.batch.draw(projectileTextureEnemy, projectile.x, projectile.y + 10, 40, 55);
         }
 
         // Draw ship projectiles
-        for (Projectile projectile : shipProjectiles) {
+        for (Projectile2 projectile : shipProjectiles) {
             game.batch.draw(projectileTextureShip, projectile.x, projectile.y + 10, 70, 50);
         }
 
@@ -203,7 +203,7 @@ public class GameScreen3 implements Screen {
             // System.out.println("koooo");
         }
         // Draw enemy projectiles
-        for (Projectile projectile : Bossprojectiles) {
+        for (Projectile2 projectile : Bossprojectiles) {
             game.batch.draw(projectileTexture, projectile.x, projectile.y + 10, 50, 30);
         }
 
@@ -225,9 +225,9 @@ public class GameScreen3 implements Screen {
             Rectangle enemyRect = new Rectangle(enemy.x, enemy.y, enemyTexture.getWidth() - 500, enemyTexture.getHeight() - 400);
 
             // Check for collision between ship projectiles and enemies
-            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
+            Iterator<Projectile2> shipProjectileIterator = shipProjectiles.iterator();
             while (shipProjectileIterator.hasNext()) {
-                Projectile projectile = shipProjectileIterator.next();
+                Projectile2 projectile = shipProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureShip.getWidth() - 100, projectileTextureShip.getHeight() - 70);
                 if (projectileRect.overlaps(enemyRect)) {
                     shipProjectileIterator.remove();
@@ -238,9 +238,9 @@ public class GameScreen3 implements Screen {
             }
 
             // Check for collision between enemy projectiles and the ship
-            Iterator<Projectile> enemyProjectileIterator = projectiles.iterator();
+            Iterator<Projectile2> enemyProjectileIterator = projectiles.iterator();
             while (enemyProjectileIterator.hasNext()) {
-                Projectile projectile = enemyProjectileIterator.next();
+                Projectile2 projectile = enemyProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTextureEnemy.getWidth() - 100, projectileTextureEnemy.getHeight() - 70);
                 if (projectileRect.overlaps(shipRect)) {
                     enemyProjectileIterator.remove();
@@ -268,9 +268,9 @@ public class GameScreen3 implements Screen {
         // Check for collision between ship projectiles and boss
         if (bossActive) {
             Rectangle bossRect = new Rectangle(boss.x, boss.y, bossTexture.getWidth() , bossTexture.getHeight()); // Adjust size as needed
-            Iterator<Projectile> shipProjectileIterator = shipProjectiles.iterator();
+            Iterator<Projectile2> shipProjectileIterator = shipProjectiles.iterator();
             while (shipProjectileIterator.hasNext()) {
-                Projectile projectile = shipProjectileIterator.next();
+                Projectile2 projectile = shipProjectileIterator.next();
                 Rectangle projectileRect = new Rectangle(projectile.x, projectile.y, projectileTexture.getWidth() - 100, projectileTexture.getHeight() - 70);
                 if (projectileRect.overlaps(bossRect)) {
                     shipProjectileIterator.remove();

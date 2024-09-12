@@ -51,6 +51,6 @@ public class Enemy2 {
     }
 
     void fireProjectile() {
-        projectiles.add(new Projectile(x, y));
+        projectiles.add(new Projectile2(x, y));
     }
 }
