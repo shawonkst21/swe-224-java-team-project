@@ -37,6 +37,7 @@ public class GameMode implements Screen {
             spaceshipSpeedX[i] = MathUtils.random(-200, 200) * Gdx.graphics.getDeltaTime();
             spaceshipSpeedY[i] = MathUtils.random(-200, 200) * Gdx.graphics.getDeltaTime();
         }
+
     }
     @Override
     public void show() {
@@ -92,6 +93,7 @@ public class GameMode implements Screen {
             {
 
                 check=true;
+                gameSound.gameMode.stop();
                 game.setScreen(new LoadingScreen(game));
 
             }
@@ -103,6 +105,7 @@ public class GameMode implements Screen {
             if(Gdx.input.isTouched())
             {
                 check=false;
+                gameSound.gameMode.stop();
                 game.setScreen(new LoadingScreen(game));
             }
         }

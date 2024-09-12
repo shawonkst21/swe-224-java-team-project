@@ -21,6 +21,8 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen (MyGdxGame game) {
         this.game = game;
+        gameSound.gameMode.setLooping(true);
+        gameSound.gameMode.play();
     }
 
     @Override
