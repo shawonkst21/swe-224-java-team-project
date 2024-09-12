@@ -38,7 +38,7 @@ public class GameScreen3 implements Screen {
     static ArrayList<Projectile2> shipProjectiles;
     static ArrayList<Projectile2> Bossprojectiles;
     ArrayList<HealthKit> healthKits = new ArrayList<>(); // List of health kits
-    Boss boss;
+    Boss2 boss;
     boolean bossActive = false;
 
     public GameScreen3(MyGdxGame game) {
@@ -62,7 +62,7 @@ public class GameScreen3 implements Screen {
         Bossprojectiles=new ArrayList<>();
 
         // Initialize boss
-        boss = new Boss(MyGdxGame.WIDTH + 50, MathUtils.random(0, MyGdxGame.HEIGHT - 100), 50, 30);
+        boss = new Boss2(MyGdxGame.WIDTH + 50, MathUtils.random(0, MyGdxGame.HEIGHT - 100), 50, 30);
 
         // Load background texture
         img = new Texture("background.jpg");
