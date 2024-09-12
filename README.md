@@ -9,6 +9,7 @@ This game was developed by:
 - Reg :2021831007
 - Name: **[Snaha Das Bonosree]** (GitHub: [https://github.com/SnahaSree])
 - Reg :2021831008
+  
 Special thanks to the LibGDX community for their excellent resources and support.
 
 ---
