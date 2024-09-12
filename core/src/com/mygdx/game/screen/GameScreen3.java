@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.MyGdxGame;
@@ -16,7 +17,8 @@ import java.util.Iterator;
 
 public class GameScreen3 implements Screen {
     public static BitmapFont sfont;
-
+    private ShapeRenderer shapeRenderer;
+    private final float maxHealth = 30;
     MyGdxGame game;
     float x, y;
     int score;
@@ -68,7 +70,7 @@ public class GameScreen3 implements Screen {
         boss = new Boss2(MyGdxGame.WIDTH + 50, MathUtils.random(0, MyGdxGame.HEIGHT - 100), 50, 30);
 
         // Load background texture
-        img = new Texture("background.jpg");
+        img = new Texture("background1.jpg");
         sfont = new BitmapFont(Gdx.files.internal("font/score.fnt")); // Initialize the font with the correct path
         sfont.getData().setScale(.8f);
     }

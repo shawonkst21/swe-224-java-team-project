@@ -50,8 +50,10 @@ public class LoadingScreen implements Screen {
         int percentage = (int) (loadingProgress * 100);
         if (percentage == 100) {
             if (GameMode.check) {
+                loadingMusic.stop();
                 game.setScreen(new GameScreen3(game));
             } else {
+                loadingMusic.stop();
                 game.setScreen(new GameScreen2(game));
             }
         }

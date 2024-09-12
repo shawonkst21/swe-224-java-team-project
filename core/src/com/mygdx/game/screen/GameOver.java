@@ -29,8 +29,8 @@ public class GameOver implements Screen {
             check = true;
         }
 
-        win = new Texture("win.png");
-        lose = new Texture("lose.png");
+        win = new Texture("GameOver/win.png");
+        lose = new Texture("GameOver/lose.png");
         font = new BitmapFont(Gdx.files.internal("font/score.fnt")); // Load your font
         //font.getData().setScale(.9f); // Scale the font if needed
     }
@@ -68,6 +68,10 @@ public class GameOver implements Screen {
         {
             font.draw(game.batch, scoreLayout, ((MyGdxGame.WIDTH - scoreLayout.width) / 2)+10, 210);
             font.draw(game.batch, highScoreLayout, ((MyGdxGame.WIDTH - highScoreLayout.width) / 2)+10, 132);
+        }
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.SPACE)) {
+            game.setScreen(new MainMenuScreen(game)); // Replace 'GameScreen' with your main game screen class
+            dispose(); // Clean up this screen
         }
 
         game.batch.end();
