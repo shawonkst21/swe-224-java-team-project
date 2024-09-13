@@ -5,7 +5,7 @@
 
 ## Credits
 This game was developed by:
-- Name: **[Shawon Hossan]** (GitHub: [https://github.com/shawonkst21])
+- Name: **[Shawon Hossan]** (GitHub:[https://github.com/shawonkst21])
 - Reg :2021831007
 - Name: **[Snaha Das Bonosree]** (GitHub: [https://github.com/SnahaSree])
 - Reg :2021831008
