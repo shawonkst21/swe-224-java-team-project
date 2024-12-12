@@ -82,11 +82,12 @@ public class GameScreen3 implements Screen {
     @Override
     public void render(float delta) {
         // Handle ship movement
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if (x < MyGdxGame.WIDTH - 115) x += speed * Gdx.graphics.getDeltaTime();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            if (y < MyGdxGame.HEIGHT - 115) y += speed * Gdx.graphics.getDeltaTime();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if (x > 0) x -= speed * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            if (y > 0) y -= speed * Gdx.graphics.getDeltaTime();
         }
 
         // Handle ship firing
@@ -127,7 +128,7 @@ public class GameScreen3 implements Screen {
         }
 
         // Check if score is a multiple of 20 and add boss
-        if (score % 2 == 0 && score != 0 && !bossActive) {
+        if (score % 20 == 0 && score != 0 && !bossActive) {
             boss.reset();
             bossActive = true;
         }
